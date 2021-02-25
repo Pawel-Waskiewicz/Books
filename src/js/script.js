@@ -5,20 +5,17 @@
     templateOf: {
       templateBook: '#template-book', 
     },
-    panel: {
-      booksPanel: '.books-panel',
-    },
     containerOf: {
       booksList: '.books-list',
     },
-    image: '.books-list .book-image',
+    image: '.books-list .book__image',
   
 
   };
 
   const templates = {
     templateBook: Handlebars.compile(document.querySelector(select.templateOf.templateBook).innerHTML),
-    //booksPanel: Handlebars.compile(document.querySelector(select.panel.booksPanel).innerHTML),
+    
   };
 
   
@@ -39,24 +36,30 @@
     }
   }
   
-  const favoriteBooks = [];
-
+  
   function initActions(){
+    const favoriteBooks = [];
     const booksList = document.querySelectorAll(select.image);
-
-    for(let book of booksList){
+    console.log(booksList);
+    // for every element in bookList
+    for(const book of booksList){
+      // add event listener on double click
       book.addEventListener('dblclick', function(event){
+        // add preventDefault
         event.preventDefault();
+        // add class favorite
         book.classList.add('favorite');
         const bookId = book.getAttribute('data-id');
-
+        console.log(bookId);
         favoriteBooks.push(bookId);
       });
-      console.log(book);
+      
     }
-  
+   
   }
- 
+  
   render();
   initActions();
+
+ 
 }
