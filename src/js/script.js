@@ -7,6 +7,7 @@
     },
     containerOf: {
       booksList: '.books-list',
+      form: '.filters',
     },
     image: '.books-list .book__image',
   
@@ -38,12 +39,33 @@
   
   const favoriteBooks = [];
 
+  const allFilters = [];
+
   function initActions(){
     
+    const filters = document.querySelector(select.containerOf.form);
+    
+    filters.addEventListener('click', function(event) {
+      const clickedElement = event.target;
+
+      if(clickedElement.tagName === 'INPUT' && clickedElement.type === 'checkbox' && clickedElement.name === 'filter' ){
+        console.log(clickedElement.value);
+      }
+      if(clickedElement.checked){
+        allFilters.push(clickedElement.value);
+        console.log(allFilters);
+      } else {
+        const indexOfAllFilters = allFilters.indexOf(clickedElement.value);
+        allFilters.splice(indexOfAllFilters, 1);
+        console.log(allFilters);
+      }
+      filterBooks();
+    });
+
     const booksList = document.querySelectorAll(select.image);
     console.log(booksList);
     // for every element in bookList
-    //for(const book of booksList){
+    
       
     const allBooks = document.querySelector(select.containerOf.booksList);
     // add event listener on double click
@@ -64,11 +86,32 @@
         }
       }
     });
-      
+  }
+
+  function filterBooks(){
     
-   
+
+    for(const book in dataSource.books){
+      console.log(allFilters);
+      let shouldBeHidden = false;
+
+      for(const filter of allFilters) {
+        if(!book.details[filter]) {
+          shouldBeHidden = true;
+          break;
+        }
+      }
+      if(shouldBeHidden){
+        const book = document.querySelector('book__image[data-id="' + book.id + '"]');
+        book.classList.add('hidden');
+      } else {
+        book.classList.remove('hidden');
+      }
+      
+    }
   }
   
+
   render();
   initActions();
 
